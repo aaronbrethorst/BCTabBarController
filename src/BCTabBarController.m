@@ -91,7 +91,15 @@
 	visible = NO;
 }
 
-
+- (UIViewController*)visibleViewController {
+  if ([selectedViewController isKindOfClass:[UINavigationController class]]) {
+		UINavigationController *nav = (UINavigationController*)selectedViewController;
+		return [nav topViewController];
+	}
+	else {
+		return self.selectedViewController;
+	}
+}
 
 - (NSUInteger)selectedIndex {
 	return [self.viewControllers indexOfObject:self.selectedViewController];

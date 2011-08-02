@@ -15,5 +15,5 @@
 @property (nonatomic, retain) UIViewController *selectedViewController;
 @property (nonatomic, retain) BCTabBarView *tabBarView;
 @property (nonatomic) NSUInteger selectedIndex;
-
+- (UIViewController*)visibleViewController;
 @end
