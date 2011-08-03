@@ -16,17 +16,19 @@
 
 
 @implementation BCTabBarController
-@synthesize viewControllers, tabBar, selectedTab, selectedViewController, tabBarView;
+@synthesize viewControllers, tabBar, selectedTab, selectedViewController, tabBarView, drawsSelectionBackground;
 
 - (void)loadView {
-	self.tabBarView = [[[BCTabBarView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]] autorelease];
+    self.drawsSelectionBackground = YES;
+    self.tabBarView = [[[BCTabBarView alloc] initWithFrame:[[UIScreen mainScreen] applicationFrame]] autorelease];
 	self.view = self.tabBarView;
 
 	self.tabBar = [[[BCTabBar alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 44, 
 															  self.view.bounds.size.width, 44)]
 				   autorelease];
 	self.tabBar.delegate = self;
-	
+    self.tabBar.arrow.hidden = !self.drawsSelectionBackground;
+
 	self.tabBarView.backgroundColor = [UIColor clearColor];
 	self.tabBarView.tabBar = self.tabBar;
 	[self loadTabs];
@@ -46,6 +48,12 @@
 		self.selectedViewController = vc;
 	}
 	
+}
+
+- (void)setDrawsSelectionBackground:(BOOL)yn {
+    drawsSelectionBackground = yn;
+    
+    self.tabBar.arrow.hidden = !drawsSelectionBackground;
 }
 
 - (void)setSelectedViewController:(UIViewController *)vc {
@@ -116,7 +124,10 @@
         if ([[vc class] isSubclassOfClass:[UINavigationController class]]) {
             ((UINavigationController *)vc).delegate = self;
         }
-        [tabs addObject:[[[BCTab alloc] initWithIconImageName:[vc iconImageName] selectedImageNameSuffix:[vc selectedIconImageNameSuffix] landscapeImageNameSuffix:[vc landscapeIconImageNameSuffix]] autorelease]];
+        BCTab *tab = [[[BCTab alloc] initWithIconImageName:[vc iconImageName] selectedImageNameSuffix:[vc selectedIconImageNameSuffix] landscapeImageNameSuffix:[vc landscapeIconImageNameSuffix]] autorelease];
+        tab.topColor = [UIColor blackColor];
+        tab.bottomColor = [UIColor blackColor];
+        [tabs addObject:tab];
 	}
 	self.tabBar.tabs = tabs;
 	[self.tabBar setSelectedTab:[self.tabBar.tabs objectAtIndex:self.selectedIndex] animated:NO];

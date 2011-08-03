@@ -10,6 +10,7 @@
 
 @implementation BCTab
 @synthesize rightBorder, background, imageName, selectedImageNameSuffix, landscapeImageNameSuffix;
+@synthesize topColor, bottomColor;
 
 - (void)assignImages:(NSString *)_imageName selectedImageNameSuffix:(NSString *)_selectedSuffix {
     NSString *selctedImageName = [[[_imageName stringByDeletingPathExtension] stringByAppendingString:_selectedSuffix] stringByAppendingPathExtension:[_imageName pathExtension]];
@@ -23,6 +24,8 @@
 		self.background = [UIImage imageNamed:@"BCTabBarController.bundle/tab-background.png"];
 		self.rightBorder = [UIImage imageNamed:@"BCTabBarController.bundle/tab-right-border.png"];
 		self.backgroundColor = [UIColor clearColor];
+        self.topColor = [UIColor colorWithRed:24.0/255.0 green:24.0/255.0 blue:24.0/255.0 alpha:1.0];
+        self.bottomColor = [UIColor colorWithRed:14.0/255.0 green:14.0/255.0 blue:14.0/255.0 alpha:1.0];
 		
 		[self assignImages:_imageName selectedImageNameSuffix:_selectedSuffix];
         self.imageName = _imageName;
@@ -33,6 +36,8 @@
 }
 
 - (void)dealloc {
+    self.topColor = nil;
+    self.bottomColor = nil;
 	self.rightBorder = nil;
 	self.background = nil;
     self.imageName = nil;
@@ -50,9 +55,9 @@
 		[background drawAtPoint:CGPointMake(0, 2)];
 		[rightBorder drawAtPoint:CGPointMake(self.bounds.size.width - rightBorder.size.width, 2)];
 		CGContextRef c = UIGraphicsGetCurrentContext();
-		[[UIColor colorWithRed:24.0/255.0 green:24.0/255.0 blue:24.0/255.0 alpha:1.0] set];
+		[self.topColor set];
 		CGContextFillRect(c, CGRectMake(0, self.bounds.size.height / 2, self.bounds.size.width, self.bounds.size.height / 2));
-		[[UIColor colorWithRed:14.0/255.0 green:14.0/255.0 blue:14.0/255.0 alpha:1.0] set];
+		[self.bottomColor set];
 		CGContextFillRect(c, CGRectMake(0, self.bounds.size.height / 2, 0.5, self.bounds.size.height / 2));
 		CGContextFillRect(c, CGRectMake(self.bounds.size.width - 0.5, self.bounds.size.height / 2, 0.5, self.bounds.size.height / 2));
 	}

@@ -15,5 +15,6 @@
 @property (nonatomic, retain) UIViewController *selectedViewController;
 @property (nonatomic, retain) BCTabBarView *tabBarView;
 @property (nonatomic) NSUInteger selectedIndex;
+@property (nonatomic, assign) BOOL drawsSelectionBackground;
 - (UIViewController*)visibleViewController;
 @end
